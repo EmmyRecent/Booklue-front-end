@@ -1,0 +1,142 @@
+import { Form } from "react-router-dom";
+import Button from "./Button";
+
+const EditProfile = ({ close }) => {
+  // A function to load image files.
+  const loadFile = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const output = document.getElementById("profileImage");
+      output.src = URL.createObjectURL(file);
+      output.onload = () => {
+        URL.revokeObjectURL(output.src);
+      };
+    } else {
+      console.log("No file selected or file type is incorrect");
+    }
+  };
+
+  return (
+    <div className="relative mx-4 min-h-[900px] w-full rounded-round bg-lightGrayColor p-8 text-whiteColor md:mx-8 lg:min-h-[960px] lg:max-w-[700px]">
+      <div className="flex items-center justify-between pb-6">
+        <p className="text-xl lg:text-2xl">Edit Profile</p>
+        <i className="bx bx-x cursor-pointer text-3xl" onClick={close}></i>
+      </div>
+
+      <hr className="absolute left-0 right-0 bg-whiteColor" />
+
+      <Form action="/profile" method="post">
+        <div className="flex items-center justify-between py-6">
+          <p className="editText">Profile Photo:</p>
+
+          <div className="relative mx-auto inline-block">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541"
+              alt="Profile Picture"
+              id="profileImage"
+              className="block rounded-full"
+              width={120}
+              height={120}
+            ></img>
+            <i
+              className="bx bx-edit absolute bottom-0 right-0 z-50 -translate-x-[10px] cursor-pointer rounded-[100%] bg-blackColor p-2 text-sm"
+              onClick={() => {
+                document.getElementById("fileInput").click();
+              }}
+            ></i>
+            <input
+              type="file"
+              name="photo"
+              accept="image/*"
+              className="hidden"
+              id="fileInput"
+              onChange={loadFile}
+            />
+          </div>
+        </div>
+
+        <hr className="absolute left-0 right-0 bg-whiteColor" />
+
+        <div className="flex items-center justify-between gap-4 py-6">
+          <p className="editText">Username:</p>
+
+          <div className="mx-auto flex w-full max-w-[400px] flex-col">
+            <input
+              type="text"
+              className="mb-2 w-full px-4 py-2 text-blackColor"
+              name="username"
+              placeholder="Your username"
+            />
+            <p className="mb-2 text-sm lg:text-lg">www.bookly.com/@username</p>
+            <p className="text-sm lg:text-lg">
+              Usernames can only contain letters, numbers, underscores, and
+              periods. Changing your username will also change your profile
+              link.
+            </p>
+          </div>
+        </div>
+
+        <hr className="absolute left-0 right-0 bg-whiteColor" />
+
+        <div className="flex items-center justify-between gap-4 py-6">
+          <p className="editText">Name:</p>
+
+          <div className="mx-auto flex w-full max-w-[400px] flex-col">
+            <input
+              type="text"
+              className="mb-2 w-full px-4 py-2 text-blackColor"
+              name="name"
+              placeholder="Your Name"
+            />
+            <p className="text-sm lg:text-lg">
+              Your Name / Nickname would be displayed on your profile
+            </p>
+          </div>
+        </div>
+
+        <hr className="absolute left-0 right-0 bg-whiteColor" />
+
+        <div className="flex items-center justify-between gap-4 py-6">
+          <p className="editText">Email:</p>
+
+          <div className="mx-auto flex w-full max-w-[400px] flex-col">
+            <input
+              type="text"
+              className="mb-2 w-full px-4 py-2 text-blackColor"
+              name="email"
+              placeholder="Your Email"
+            />
+          </div>
+        </div>
+
+        <hr className="absolute left-0 right-0 bg-whiteColor" />
+
+        <div className="flex items-center justify-between gap-4 py-6">
+          <p className="editText">Bio:</p>
+
+          <div className="mx-auto flex w-full max-w-[400px] flex-col">
+            <textarea
+              type="text"
+              className="mb-2 w-full px-4 py-2 text-blackColor"
+              name="bio"
+              placeholder="Bio"
+              rows={3}
+            />
+          </div>
+        </div>
+
+        <hr className="absolute left-0 right-0 bg-whiteColor" />
+
+        <div className="pt-6">
+          <div className="flex items-center justify-end gap-4">
+            <Button text={"Cancel"} click={close} />
+            <Button text={"Save"} click={close} />
+          </div>
+        </div>
+      </Form>
+    </div>
+  );
+};
+
+export default EditProfile;

@@ -1,0 +1,147 @@
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a.active {
+  @apply text-secondaryColor;
+}
+
+@layer base {
+  html {
+    font-size: 100%;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply overflow-x-hidden bg-primaryColor font-josefin;
+  }
+
+  label {
+    @apply text-[1.1rem] text-whiteColor lg:text-lg;
+  }
+
+  textarea {
+    @apply resize-none;
+  }
+
+  input,
+  textarea {
+    @apply rounded-round bg-whiteColor p-3 text-[1rem] placeholder:text-primaryColor;
+  }
+
+  textarea:focus,
+  input:focus {
+    @apply outline-none;
+  }
+
+  select {
+    @apply rounded-round bg-lightGrayColor p-2 text-whiteColor;
+  }
+
+  select:focus {
+    @apply outline-none;
+  }
+
+  option {
+    @apply py-4;
+  }
+
+  option:hover {
+    @apply bg-red-400;
+  }
+}
+
+@layer components {
+  .wrapper {
+    width: min(1266px, calc(100% - 32px));
+    margin-inline: auto;
+  }
+
+  /* tool tip */
+  .tooltip {
+    @apply relative inline-block cursor-pointer;
+  }
+
+  .tooltip .tooltiptext {
+    @apply invisible absolute bottom-[-115%] left-[50%] z-[1] w-max translate-x-[-50%] rounded bg-grayColor p-2 text-center text-xs text-whiteColor opacity-0 transition-opacity duration-[0.3s];
+  }
+
+  /* Tooltip Arrow */
+  .tooltip .tooltiptext::after {
+    content: "";
+    @apply absolute bottom-full left-1/2 ml-[-5px] border-[5px];
+    border-style: solid;
+    border-color: transparent transparent #394553 transparent;
+  }
+
+  .tooltip:hover .tooltiptext {
+    @apply visible opacity-100;
+  }
+
+  .hero {
+    @apply relative min-h-screen bg-[url("/src/assets/images/hero-img.png")] bg-cover bg-center;
+  }
+
+  .account-hero {
+    @apply relative min-h-[50vh] bg-[url("/src/assets/images/bookImg.png")] bg-cover bg-center;
+  }
+
+  .input-group {
+    @apply flex flex-col gap-1;
+  }
+
+  .overlay {
+    @apply fixed inset-0 flex justify-center overflow-y-auto bg-slate-700 bg-opacity-70;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 50;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .overlay::-webkit-scrollbar {
+    display: none; /* Optional: Hides the scrollbar for a cleaner look */
+  }
+
+  .overlay {
+    scrollbar-width: none; /* Firefox */
+  }
+
+  .overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  body.modal-open {
+    overflow: hidden; /* Prevent body scroll when modal is open */
+  }
+
+  .editText {
+    @apply text-lg lg:text-xl;
+  }
+}
+
+@layer utilities {
+  .heading {
+    @apply text-3xl uppercase text-whiteColor lg:text-4xl;
+  }
+
+  .subheading {
+    @apply text-xl capitalize text-secondaryColor lg:text-2xl;
+  }
+
+  .book-content {
+    @apply text-lg lg:text-xl;
+  }
+
+  .book-text {
+    @apply text-lg font-medium text-secondaryColor;
+  }
+}
