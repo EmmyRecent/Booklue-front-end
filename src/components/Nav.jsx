@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Logo } from "../assets/icons";
 import { navLinks } from "../constants";
 import { Form, Link, NavLink, useNavigate } from "react-router-dom";
+import { AuthContext } from "../context/AuthContext";
 
 const Nav = () => {
+  const { isAuthenticated, user } = useContext(AuthContext);
+
   const [clicked, setClicked] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [query, setQuery] = useState("");
@@ -12,6 +15,8 @@ const Nav = () => {
   const handleSearchChange = (e) => {
     const { value } = e.target;
     setQuery(value);
+
+    // console.log(value);
 
     if (value.trim()) {
       navigate(`/search?q=${value}`);
@@ -82,12 +87,31 @@ const Nav = () => {
 
             {/* Account */}
             <li>
-              <NavLink to={"/account/login"} onClick={handleClick}>
-                <div className="flex transition duration-300 ease-in-out hover:text-secondaryColor lg:items-center lg:justify-center">
-                  <i className="bx bxs-user-circle text-2xl text-secondaryColor"></i>
-                  <span className="mt-1 text-lg">Account</span>
-                </div>
-              </NavLink>
+              {isAuthenticated ? (
+                <NavLink to={"/profile"} onClick={handleClick}>
+                  <div className="flex items-center gap-1 duration-300 ease-in-out hover:text-secondaryColor lg:gap-0">
+                    {user.profile_picture ? (
+                      <img
+                        src={user.profile_picture}
+                        className="rounded-[100%]"
+                        width={40}
+                        height={40}
+                        alt="User image"
+                      />
+                    ) : (
+                      <i className="bx bxs-user-circle text-2xl text-secondaryColor lg:text-3xl"></i>
+                    )}
+                    <p className="mt-1 text-lg lg:text-sm">{user.email}</p>
+                  </div>
+                </NavLink>
+              ) : (
+                <NavLink to={"/account/login"} onClick={handleClick}>
+                  <div className="flex transition duration-300 ease-in-out hover:text-secondaryColor lg:items-center lg:justify-center">
+                    <i className="bx bxs-user-circle text-2xl text-secondaryColor"></i>
+                    <span className="mt-1 text-lg">Account</span>
+                  </div>
+                </NavLink>
+              )}
             </li>
           </ul>
         </div>

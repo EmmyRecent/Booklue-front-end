@@ -1,5 +1,4 @@
 import axios from "axios";
-// import { redirect } from "react-router-dom";
 
 export const navLinks = [
   { label: "Home", href: "/" },
@@ -105,14 +104,35 @@ export const editProfileAction = async ({ request }) => {
   const data = await request.formData();
 
   const submission = {
-    photo: data.get("photo"),
+    id: data.get("userId"),
+    photo: data.get("profileBit"),
     username: data.get("username"),
     name: data.get("name"),
     email: data.get("email"),
     bio: data.get("bio"),
   };
 
-  console.log(submission);
+  // Post request to the server.
+  try {
+    const response = await axios.post("http://localhost:5000/editProfile", {
+      submission,
+    });
 
-  return submission;
+    console.log("Edit profile response:", response.data);
+
+    return { message: response.data };
+  } catch (err) {
+    console.error(
+      "Error submitting profile details:",
+      err.response?.data || err.message,
+    );
+
+    if (err.response && err.response.status === 400) {
+      return { error: err.response.data.message };
+    }
+
+    return {
+      error: "An error occurred during profile edit, please try again later.",
+    };
+  }
 };

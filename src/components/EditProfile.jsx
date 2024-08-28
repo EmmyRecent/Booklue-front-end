@@ -1,17 +1,31 @@
-import { Form } from "react-router-dom";
+import { Form, useActionData } from "react-router-dom";
 import Button from "./Button";
+import { useContext, useState } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 const EditProfile = ({ close }) => {
-  // A function to load image files.
+  const data = useActionData();
+  const { user } = useContext(AuthContext);
+  const [emailValue, setEmailValue] = useState(user.email);
+  const [base64Image, setBase64Image] = useState(""); // state to store base 64 image.
+
+  const handleEmailChange = (e) => {
+    setEmailValue(e.target.value);
+  };
+
+  // A function to load image files and convert to Base64
   const loadFile = (e) => {
     const file = e.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      setBase64Image(reader.result); // store the base 64 string as a state.
+      const output = document.getElementById("profileImage");
+      output.src = reader.result; // Update the image preview
+    };
 
     if (file) {
-      const output = document.getElementById("profileImage");
-      output.src = URL.createObjectURL(file);
-      output.onload = () => {
-        URL.revokeObjectURL(output.src);
-      };
+      reader.readAsDataURL(file); // Convert to Base64
     } else {
       console.log("No file selected or file type is incorrect");
     }
@@ -40,7 +54,7 @@ const EditProfile = ({ close }) => {
               height={120}
             ></img>
             <i
-              className="bx bx-edit absolute bottom-0 right-0 z-50 -translate-x-[10px] cursor-pointer rounded-[100%] bg-blackColor p-2 text-sm"
+              className="bx bx-edit absolute bottom-0 right-0 z-50 -translate-x-[10px] cursor-pointer rounded-[100%] bg-secondaryColor p-2 text-sm"
               onClick={() => {
                 document.getElementById("fileInput").click();
               }}
@@ -55,6 +69,22 @@ const EditProfile = ({ close }) => {
             />
           </div>
         </div>
+
+        <input
+          type="text"
+          value={base64Image}
+          className="hidden"
+          onChange={loadFile}
+          name="profileBit"
+        />
+
+        <input
+          type="text"
+          className="hidden"
+          onChange={loadFile}
+          value={user.id}
+          name="userId"
+        />
 
         <hr className="absolute left-0 right-0 bg-whiteColor" />
 
@@ -106,6 +136,8 @@ const EditProfile = ({ close }) => {
               className="mb-2 w-full px-4 py-2 text-blackColor"
               name="email"
               placeholder="Your Email"
+              onChange={handleEmailChange}
+              value={emailValue}
             />
           </div>
         </div>
@@ -128,9 +160,18 @@ const EditProfile = ({ close }) => {
 
         <hr className="absolute left-0 right-0 bg-whiteColor" />
 
+        {data && data.error && (
+          <p className="pt-4 text-sm text-red-800">{data.error}!</p>
+        )}
+
         <div className="pt-6">
           <div className="flex items-center justify-end gap-4">
-            <Button text={"Cancel"} click={close} />
+            <div
+              className="cursor-pointer rounded-round bg-secondaryColor px-10 py-2 text-whiteColor"
+              onClick={close}
+            >
+              <p>Cancel</p>
+            </div>
             <Button text={"Save"} click={close} />
           </div>
         </div>

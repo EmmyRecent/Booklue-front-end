@@ -48,7 +48,6 @@ const router = createBrowserRouter(
       <Route path="account" element={<AccountLayout />}>
         <Route path="login" element={<LogIn />} action={loginAction} />
         <Route path="register" element={<SignUp />} action={signUpAction} />
-        <Route path="user" element={<h1>Welcome user to your account</h1>} />
       </Route>
 
       <Route element={<ProtectedRoute />}>

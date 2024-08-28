@@ -6,6 +6,8 @@ const SearchView = () => {
   const [loading, setLoading] = useState(true);
   const { books } = useLoaderData();
 
+  console.log("Books:", books);
+
   useEffect(() => {
     if (books) {
       setLoading(false);
