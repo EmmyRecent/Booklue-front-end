@@ -3,12 +3,16 @@ import { AuthContext } from "../context/AuthContext";
 import { Form, useActionData } from "react-router-dom";
 import EditProfile from "../components/EditProfile";
 import axios from "axios";
+import BookmarkCard from "../components/BookmarkCard";
 
 const ProfilePage = () => {
   const data = useActionData();
   const body = document.querySelector("body");
   const { user, setIsAuthenticated, setUser } = useContext(AuthContext);
   const [showEditProfile, setShowEditProfile] = useState(false);
+  const [userBooks, setUserBooks] = useState([]);
+
+  console.log("User books:", userBooks);
 
   const handleClick = () => {
     setShowEditProfile(true);
@@ -46,6 +50,29 @@ const ProfilePage = () => {
     };
     getUser();
   }, [data, setUser, user.email]);
+
+  // Get users books.
+  useEffect(() => {
+    const getUserBooks = async () => {
+      console.log("Getting user books!");
+
+      try {
+        const result = await axios.get(
+          "http://localhost:5000/api/getUserBooks",
+          {
+            params: { id: user.id },
+          },
+        );
+
+        // console.log("Book Results:", result.data);
+        setUserBooks(result.data.data);
+      } catch (err) {
+        console.error("Error getting user books:", err);
+      }
+    };
+
+    getUserBooks();
+  }, [user.id]);
 
   return (
     <section>
@@ -106,7 +133,13 @@ const ProfilePage = () => {
           </div>
 
           {/* Read books should be displayed here */}
-          <div className="min-h-[30vh]"></div>
+          <div className="min-h-[30vh]">
+            <ul className="flex flex-col gap-4 py-8">
+              {userBooks.map((book, index) => (
+                <BookmarkCard {...book} key={index} />
+              ))}
+            </ul>
+          </div>
 
           <div className="flex items-center justify-between text-xl lg:text-2xl">
             <h4 className="text-whiteColor">Books reviewed</h4>

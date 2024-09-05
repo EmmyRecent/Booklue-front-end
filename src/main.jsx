@@ -20,15 +20,19 @@ import LogIn from "./pages/auth/LogIn.jsx";
 import SignUp from "./pages/auth/SignUp.jsx";
 import SearchView from "./components/SearchView.jsx";
 import SearchViewError from "./components/SearchViewError.jsx";
+import ProfilePage from "./pages/ProfilePage.jsx";
+import ProtectedRoute from "./components/ProtectedRoute.jsx";
+
+// Actions
 import {
   editProfileAction,
   loginAction,
   searchLoader,
   signUpAction,
 } from "./constants/index.js";
+
+// Contexts
 import { AuthProvider } from "./context/AuthContext.jsx";
-import ProtectedRoute from "./components/ProtectedRoute.jsx";
-import ProfilePage from "./pages/ProfilePage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
