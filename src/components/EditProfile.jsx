@@ -32,7 +32,7 @@ const EditProfile = ({ close }) => {
   };
 
   return (
-    <div className="relative mx-4 min-h-[900px] w-full rounded-round bg-lightGrayColor p-8 text-whiteColor md:mx-8 lg:min-h-[960px] lg:max-w-[700px]">
+    <div className="relative mx-4 min-h-[1200px] w-full rounded-round bg-lightGrayColor p-8 text-whiteColor ll:min-h-[1200px] sm:min-h-[920px] md:mx-8 md:min-h-[920px] lg:min-h-[990px] lg:max-w-[700px]">
       <div className="flex items-center justify-between pb-6">
         <p className="text-xl lg:text-2xl">Edit Profile</p>
         <i className="bx bx-x cursor-pointer text-3xl" onClick={close}></i>
@@ -41,7 +41,7 @@ const EditProfile = ({ close }) => {
       <hr className="absolute left-0 right-0 bg-whiteColor" />
 
       <Form action="/profile" method="post">
-        <div className="flex items-center justify-between py-6">
+        <div className="flex flex-col items-start justify-between gap-2 py-6 sm:flex-row sm:items-center">
           <p className="editText">Profile Photo:</p>
 
           <div className="relative mx-auto inline-block">
@@ -88,7 +88,7 @@ const EditProfile = ({ close }) => {
 
         <hr className="absolute left-0 right-0 bg-whiteColor" />
 
-        <div className="flex items-center justify-between gap-4 py-6">
+        <div className="flex flex-col items-start justify-between gap-4 py-6 sm:flex-row sm:items-center">
           <p className="editText">Username:</p>
 
           <div className="mx-auto flex w-full max-w-[400px] flex-col">
@@ -109,7 +109,7 @@ const EditProfile = ({ close }) => {
 
         <hr className="absolute left-0 right-0 bg-whiteColor" />
 
-        <div className="flex items-center justify-between gap-4 py-6">
+        <div className="flex flex-col items-start justify-between gap-4 py-6 sm:flex-row sm:items-center">
           <p className="editText">Name:</p>
 
           <div className="mx-auto flex w-full max-w-[400px] flex-col">
@@ -127,7 +127,7 @@ const EditProfile = ({ close }) => {
 
         <hr className="absolute left-0 right-0 bg-whiteColor" />
 
-        <div className="flex items-center justify-between gap-4 py-6">
+        <div className="flex flex-col items-start justify-between gap-4 py-6 sm:flex-row sm:items-center">
           <p className="editText">Email:</p>
 
           <div className="mx-auto flex w-full max-w-[400px] flex-col">
@@ -144,7 +144,7 @@ const EditProfile = ({ close }) => {
 
         <hr className="absolute left-0 right-0 bg-whiteColor" />
 
-        <div className="flex items-center justify-between gap-4 py-6">
+        <div className="flex flex-col items-start justify-between gap-4 py-6 sm:flex-row sm:items-center">
           <p className="editText">Bio:</p>
 
           <div className="mx-auto flex w-full max-w-[400px] flex-col">

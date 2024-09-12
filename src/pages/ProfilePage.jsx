@@ -4,13 +4,18 @@ import { Form, useActionData } from "react-router-dom";
 import EditProfile from "../components/EditProfile";
 import axios from "axios";
 import BookmarkCard from "../components/BookmarkCard";
+import ReviewBook from "../components/ReviewBook";
+import ReviewedBookCard from "../components/ReviewedBookCard";
 
 const ProfilePage = () => {
   const data = useActionData();
   const body = document.querySelector("body");
   const { user, setIsAuthenticated, setUser } = useContext(AuthContext);
   const [showEditProfile, setShowEditProfile] = useState(false);
+  const [showReviewBook, setShowReviewBook] = useState(false);
   const [userBooks, setUserBooks] = useState([]);
+  const [sortBy, setSortBy] = useState("Title");
+  const [reviewedBook, setReviewedBook] = useState([]);
 
   console.log("User books:", userBooks);
 
@@ -18,7 +23,7 @@ const ProfilePage = () => {
     setShowEditProfile(true);
   };
 
-  if (showEditProfile) {
+  if (showEditProfile || showReviewBook) {
     body.classList.add("modal-open");
   } else {
     body.classList.remove("modal-open");
@@ -30,6 +35,12 @@ const ProfilePage = () => {
 
     setIsAuthenticated(false);
   };
+
+  const handleChange = (e) => {
+    setSortBy(e.target.value);
+  };
+
+  console.log("Sort by:", sortBy);
 
   // Updating the user data when profile has been edited.
   useEffect(() => {
@@ -60,11 +71,10 @@ const ProfilePage = () => {
         const result = await axios.get(
           "http://localhost:5000/api/getUserBooks",
           {
-            params: { id: user.id },
+            params: { id: user.id, sort: sortBy },
           },
         );
 
-        // console.log("Book Results:", result.data);
         setUserBooks(result.data.data);
       } catch (err) {
         console.error("Error getting user books:", err);
@@ -72,13 +82,35 @@ const ProfilePage = () => {
     };
 
     getUserBooks();
+  }, [user.id, sortBy]);
+
+  // Get users reviewed books.
+  useEffect(() => {
+    const getReviewedBook = async () => {
+      console.log("Getting reviewed Books!");
+
+      try {
+        const result = await axios.get(
+          "http://localhost:5000/api/getUserReviewedBooks",
+          {
+            params: { id: user.id },
+          },
+        );
+
+        setReviewedBook(result.data.data);
+      } catch (err) {
+        console.error("Error getting user reviewed books:", err);
+      }
+    };
+
+    getReviewedBook();
   }, [user.id]);
 
   return (
     <section>
       <div className="wrapper">
         <div className="py-10">
-          <div className="flex items-center gap-4">
+          <div className="flex flex-col items-center gap-4 text-center md:flex-row md:text-start">
             {user.profile_picture ? (
               <img
                 className="rounded-[100%]"
@@ -99,7 +131,7 @@ const ProfilePage = () => {
               <p className="text-lg lg:text-xl">{user.email}</p>
 
               <div
-                className="mr-auto flex cursor-pointer gap-2 whitespace-nowrap rounded-round bg-lightGrayColor p-2 text-lg lg:text-xl"
+                className="mx-auto flex cursor-pointer gap-2 whitespace-nowrap rounded-round bg-lightGrayColor p-2 text-lg md:mx-0 md:mr-auto lg:text-xl"
                 onClick={handleClick}
               >
                 <i className="bx bx-edit text-lg"></i>
@@ -114,7 +146,7 @@ const ProfilePage = () => {
         </div>
 
         <div className="py-7 lg:py-10">
-          <div className="flex items-center justify-between text-xl lg:text-2xl">
+          <div className="flex flex-col items-start justify-between gap-2 text-xl ll:flex-row ll:items-center lg:text-2xl">
             <h4 className="text-whiteColor">Books read</h4>
 
             <div className="flex items-center justify-center gap-2">
@@ -123,25 +155,37 @@ const ProfilePage = () => {
               <Form>
                 <label htmlFor="Sort by"></label>
 
-                <select name="sort">
+                <select name="sort" value={sortBy} onChange={handleChange}>
                   <option value="Title">Title</option>
                   <option value="Author">Author</option>
-                  <option value="date">Date</option>
+                  <option value="added_at">Date</option>
                 </select>
               </Form>
             </div>
           </div>
 
-          {/* Read books should be displayed here */}
-          <div className="min-h-[30vh]">
-            <ul className="flex flex-col gap-4 py-8">
-              {userBooks.map((book, index) => (
-                <BookmarkCard {...book} key={index} />
-              ))}
-            </ul>
+          {/* Read books  */}
+          <div className="flex min-h-[30vh] flex-col justify-center">
+            {userBooks.length === 0 ? (
+              <p className="justify-self-center text-center text-2xl text-lightGrayColor">
+                No books read
+              </p>
+            ) : (
+              <ul className="flex flex-col gap-4 py-8">
+                {userBooks.map((book, index) => (
+                  <BookmarkCard
+                    {...book}
+                    key={index}
+                    userBooks={userBooks}
+                    setUserBooks={setUserBooks}
+                    setShowReviewBook={setShowReviewBook}
+                  />
+                ))}
+              </ul>
+            )}
           </div>
 
-          <div className="flex items-center justify-between text-xl lg:text-2xl">
+          <div className="flex flex-col items-start justify-between gap-2 text-xl ll:flex-row ll:items-center lg:text-2xl">
             <h4 className="text-whiteColor">Books reviewed</h4>
 
             <div className="flex items-center justify-center gap-2">
@@ -160,8 +204,20 @@ const ProfilePage = () => {
             </div>
           </div>
 
-          {/* Reviewed books should be displayed here */}
-          <div className="min-h-[30vh]"></div>
+          {/* Reviewed books  */}
+          <div className="flex min-h-[30vh] flex-col justify-center">
+            {reviewedBook.length === 0 ? (
+              <p className="justify-self-center text-center text-2xl text-lightGrayColor">
+                No books reviewed
+              </p>
+            ) : (
+              <ul className="grid grid-cols-1 gap-4 py-8 max-[480px]:place-items-center sm:grid-cols-2 lg:grid-cols-3">
+                {reviewedBook.map((book, index) => (
+                  <ReviewedBookCard key={index} {...book} />
+                ))}
+              </ul>
+            )}
+          </div>
         </div>
 
         {/* Overlay */}
@@ -169,6 +225,12 @@ const ProfilePage = () => {
           className={`overlay pb-[20px] pt-[20px] ${showEditProfile ? "show" : ""}`}
         >
           <EditProfile close={() => setShowEditProfile(false)} />
+        </div>
+
+        <div
+          className={`overlay pb-[20px] pt-[20px] ${showReviewBook ? "show" : ""}`}
+        >
+          <ReviewBook close={() => setShowReviewBook(false)} />
         </div>
 
         <div

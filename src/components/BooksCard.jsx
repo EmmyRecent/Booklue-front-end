@@ -19,8 +19,6 @@ const BooksCard = ({
   // Use the imgUrl function to generate the cover URL
   const coverUrl = imgUrl({ isbn, cover_edition_key, olid });
 
-  // console.log("User authenticated?:", isAuthenticated);
-
   const handleBookmark = async () => {
     console.log("Bookmarked button clicked!");
 
@@ -63,9 +61,6 @@ const BooksCard = ({
     } else {
       setError("Cannot add to bookmark, please login to your account!"); // error message if user is not logged in.
     }
-
-    // console.log("Message: ", message);
-    // console.log("Error: ", error);
   };
 
   return (

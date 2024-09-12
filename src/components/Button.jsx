@@ -1,8 +1,20 @@
-const Button = ({ text, searchBookmark, click, bookmark, review }) => {
+const Button = ({
+  text,
+  searchBookmark,
+  click,
+  bookmark,
+  review,
+  reviewSave,
+}) => {
   return (
     <button
       className={`cursor-pointer rounded-round bg-secondaryColor ${review ? "px-3" : "px-10"} py-2 text-whiteColor ${searchBookmark ? "flex items-center justify-center gap-1" : "inline-block"}`}
-      onClick={(click ? click : null, bookmark && bookmark)}
+      onClick={() => {
+        if (click) click();
+        if (bookmark) bookmark();
+        if (review) review();
+        if (reviewSave) reviewSave();
+      }}
     >
       {searchBookmark && (
         <div>

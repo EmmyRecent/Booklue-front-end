@@ -33,6 +33,7 @@ import {
 
 // Contexts
 import { AuthProvider } from "./context/AuthContext.jsx";
+import { BookProvider } from "./context/BookContext.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -70,7 +71,9 @@ const router = createBrowserRouter(
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} />
+      <BookProvider>
+        <RouterProvider router={router} />
+      </BookProvider>
     </AuthProvider>
   </React.StrictMode>,
 );

@@ -89,7 +89,7 @@ const Nav = () => {
             <li>
               {isAuthenticated ? (
                 <NavLink to={"/profile"} onClick={handleClick}>
-                  <div className="flex items-center gap-1 duration-300 ease-in-out hover:text-secondaryColor lg:gap-0">
+                  <div className="flex flex-col gap-1 duration-300 ease-in-out hover:text-secondaryColor sm:flex-row sm:items-center lg:gap-0">
                     {user.profile_picture ? (
                       <img
                         src={user.profile_picture}
