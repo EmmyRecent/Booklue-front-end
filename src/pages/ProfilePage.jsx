@@ -6,16 +6,17 @@ import axios from "axios";
 import BookmarkCard from "../components/BookmarkCard";
 import ReviewBook from "../components/ReviewBook";
 import ReviewedBookCard from "../components/ReviewedBookCard";
+import { BookContext } from "../context/BookContext";
 
 const ProfilePage = () => {
   const data = useActionData();
   const body = document.querySelector("body");
   const { user, setIsAuthenticated, setUser } = useContext(AuthContext);
+  const { reviewedBook, setReviewedBook } = useContext(BookContext);
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showReviewBook, setShowReviewBook] = useState(false);
   const [userBooks, setUserBooks] = useState([]);
   const [sortBy, setSortBy] = useState("Title");
-  const [reviewedBook, setReviewedBook] = useState([]);
 
   console.log("User books:", userBooks);
 
@@ -104,7 +105,7 @@ const ProfilePage = () => {
     };
 
     getReviewedBook();
-  }, [user.id]);
+  }, [user.id, setReviewedBook, userBooks]);
 
   return (
     <section>
@@ -219,6 +220,8 @@ const ProfilePage = () => {
             )}
           </div>
         </div>
+
+        {/* //TODO:sync the remove bookmark and the review page together.  */}
 
         {/* Overlay */}
         <div

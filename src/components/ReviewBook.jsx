@@ -7,13 +7,11 @@ import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 
 const ReviewBook = ({ close }) => {
-  const { reviewBook } = useContext(BookContext);
+  const { reviewBook, setReviewedBook } = useContext(BookContext);
   const { user } = useContext(AuthContext);
   const [rating, setRating] = useState(reviewBook.rating); // come back here.
   const [dateRead, setDateRead] = useState(reviewBook.readDate);
   const [note, setNote] = useState(reviewBook.notes);
-
-  // console.log("Book to be reviewed:", reviewBook);
 
   const handleReviewBook = async () => {
     console.log("Book saved!");
@@ -37,7 +35,9 @@ const ReviewBook = ({ close }) => {
 
       // If response.status === OK! remove the book form read.
 
-      console.log(response.data);
+      console.log("This is a new reviewed dook data!", response.data);
+
+      setReviewedBook(response.data.data);
     } catch (err) {
       console.error("Failed to add Review Books!", err);
     }
