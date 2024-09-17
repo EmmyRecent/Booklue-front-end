@@ -34,11 +34,13 @@ import {
 // Contexts
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { BookProvider } from "./context/BookContext.jsx";
+import ReviewPostDetails from "./components/ReviewPostDetails.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Home />} />
+      <Route path="post/:userId/:bookId" element={<ReviewPostDetails />} />
       <Route
         path="about"
         element={<h1 className="wrapper">Hello world from about page</h1>}

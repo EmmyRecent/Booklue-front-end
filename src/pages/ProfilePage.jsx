@@ -212,7 +212,7 @@ const ProfilePage = () => {
                 No books reviewed
               </p>
             ) : (
-              <ul className="grid grid-cols-1 gap-4 py-8 max-[480px]:place-items-center sm:grid-cols-2 lg:grid-cols-3">
+              <ul className="grid grid-cols-1 justify-items-center gap-4 py-8 max-[480px]:place-items-center sm:grid-cols-2 lg:grid-cols-3">
                 {reviewedBook.map((book, index) => (
                   <ReviewedBookCard key={index} {...book} />
                 ))}

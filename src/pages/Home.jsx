@@ -1,8 +1,43 @@
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { io } from "socket.io-client";
+import ReviewPost from "../components/ReviewPost";
+
+const socket = io("http://localhost:5000"); // Backend url.
+
 const Home = () => {
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    // Fetch initial posts when component mounts.
+    const fetchPosts = async () => {
+      const response = await axios.get(
+        "http://localhost:5000/api/getReviewBookPosts",
+      );
+
+      setPosts(response.data.data);
+    };
+
+    fetchPosts();
+
+    // Listen for a real-time updates via webSocket.
+    socket.on("reviewBookPosts", (updatedPosts) => {
+      console.log("Updated Posts:", updatedPosts);
+      setPosts(updatedPosts);
+    });
+
+    // Clean up the socket connection on component unmount.
+    return () => {
+      socket.off("reviewBookPosts");
+    };
+  }, []);
+
+  console.log("Posts:", posts);
+
   return (
     <>
       <section className="hero">
-        <div className="absolute inset-0 flex items-center bg-black bg-opacity-30">
+        <div className="absolute inset-0 flex items-center bg-black bg-opacity-15">
           <div className="wrapper">
             <h1 className="subheading">
               Your Destination For High-Flying Reads
@@ -14,15 +49,18 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="min-h-screen">
+      <section className="min-h-screen translate-y-[-130px]">
         <div className="wrapper">
-          <h2>Recent post</h2>
-          <p>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Commodi
-            animi voluptatum magnam placeat? Tenetur veritatis dicta, beatae,
-            nostrum harum aspernatur ex mollitia modi amet deleniti
-            necessitatibus exercitationem illum, reiciendis quam.
-          </p>
+          <h2 className="text-xl font-normal text-secondaryColor lg:text-2xl">
+            Recent Posts
+          </h2>
+
+          {/* Fetch book posts. */}
+          <ul className="grid grid-cols-1 justify-items-center gap-x-4 gap-y-7 py-8 max-[480px]:place-items-center sm:grid-cols-2 lg:grid-cols-3">
+            {posts.map((post, index) => (
+              <ReviewPost key={index} {...post} />
+            ))}
+          </ul>
         </div>
       </section>
     </>
