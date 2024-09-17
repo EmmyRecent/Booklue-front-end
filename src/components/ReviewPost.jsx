@@ -1,16 +1,16 @@
 import { Link } from "react-router-dom";
 
-const ReviewedBookCard = ({
-  id,
-  book_id,
-  cover_image,
+const ReviewPost = ({
   author,
+  cover_image,
   name,
   notes,
   profile_picture,
   rating,
   read_date,
   title,
+  id,
+  book_id,
 }) => {
   const dateString = read_date;
   const dateOnly = new Date(dateString).toISOString().split("T")[0];
@@ -40,7 +40,7 @@ const ReviewedBookCard = ({
   };
 
   return (
-    <div className="w-full max-w-[300px] rounded-round border border-secondaryColor p-3 shadow-xl">
+    <div className="col-span-1 w-full max-w-[330px] rounded-round border border-secondaryColor p-3 shadow-xl">
       <li className="flex flex-col gap-4">
         <img src={cover_image} alt={title} className="w-full" />
 
@@ -83,7 +83,9 @@ const ReviewedBookCard = ({
 
           {/* Profile */}
           <div className="mr-auto w-auto cursor-pointer rounded-round bg-grayColor px-3 py-2 text-whiteColor hover:text-secondaryColor">
-            <Link to={`/post/${id}/${book_id}`}>Read full notes {">>"}</Link>
+            <Link to={`post/${id.toString()}/${book_id.toString()}`}>
+              Read full notes {">>"}
+            </Link>
           </div>
         </div>
       </li>
@@ -91,4 +93,4 @@ const ReviewedBookCard = ({
   );
 };
 
-export default ReviewedBookCard;
+export default ReviewPost;
