@@ -57,7 +57,7 @@ const Home = () => {
 
           {/* Fetch book posts. */}
           <ul className="grid grid-cols-1 justify-items-center gap-x-4 gap-y-7 py-8 max-[480px]:place-items-center sm:grid-cols-2 lg:grid-cols-3">
-            {posts.map((post, index) => (
+            {[...posts].reverse().map((post, index) => (
               <ReviewPost key={index} {...post} />
             ))}
           </ul>
