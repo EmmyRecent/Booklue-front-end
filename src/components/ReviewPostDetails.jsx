@@ -6,15 +6,6 @@ const ReviewPostDetails = () => {
   const { userId, bookId } = useParams();
   const [bookDetails, setBookDetails] = useState([]);
 
-  console.log("Param User id:", userId);
-  console.log("Param Book id:", bookId);
-  console.log(bookDetails);
-
-  // const dateString = bookDetails.read_date;
-  // const date = new Date(dateString).toISOString().split("T")[0]; // This will give you "2024-09-04"
-
-  // console.log(date); // Output: "2024-09-04"
-
   const dateString = bookDetails?.read_date;
 
   // check if date string is valid.

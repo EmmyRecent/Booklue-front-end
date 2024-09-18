@@ -33,10 +33,7 @@ const ReviewBook = ({ close }) => {
         reviewData,
       );
 
-      // If response.status === OK! remove the book form read.
-
-      console.log("This is a new reviewed dook data!", response.data);
-
+      // console.log("From the server:", response.data.data);
       setReviewedBook(response.data.data);
     } catch (err) {
       console.error("Failed to add Review Books!", err);
@@ -50,15 +47,15 @@ const ReviewBook = ({ close }) => {
   };
 
   return (
-    <div className="relative mx-4 min-h-[880px] w-full rounded-round bg-lightGrayColor p-8 text-whiteColor ll:min-h-[850px] sm:min-h-[800px] md:mx-8 md:min-h-[800px] lg:min-h-[800px] lg:max-w-[700px]">
-      <div className="flex items-center justify-between pb-6">
-        <p className="text-xl lg:text-2xl">Review Book</p>
-        <i className="bx bx-x cursor-pointer text-3xl" onClick={close}></i>
-      </div>
+    <div className="mx-4 h-full w-full bg-transparent text-whiteColor lg:max-w-[700px]">
+      <Form className="relative rounded-round bg-lightGrayColor p-8">
+        <div className="flex items-center justify-between pb-6">
+          <p className="text-xl lg:text-2xl">Review Book</p>
+          <i className="bx bx-x cursor-pointer text-3xl" onClick={close}></i>
+        </div>
 
-      <hr className="absolute left-0 right-0 bg-whiteColor" />
+        <hr className="absolute left-0 right-0 bg-whiteColor" />
 
-      <Form>
         <div className="flex items-center justify-between py-6">
           <h3 className="editText text-xl font-medium">Book Title:</h3>
 

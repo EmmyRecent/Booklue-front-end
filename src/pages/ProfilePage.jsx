@@ -221,8 +221,6 @@ const ProfilePage = () => {
           </div>
         </div>
 
-        {/* //TODO:sync the remove bookmark and the review page together.  */}
-
         {/* Overlay */}
         <div
           className={`overlay pb-[20px] pt-[20px] ${showEditProfile ? "show" : ""}`}

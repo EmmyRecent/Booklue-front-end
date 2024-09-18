@@ -18,7 +18,10 @@ const BookmarkCard = ({
   setShowReviewBook,
 }) => {
   const { user } = useContext(AuthContext);
-  const { setReviewBook } = useContext(BookContext);
+  const { setReviewBook, reviewedBook } = useContext(BookContext);
+
+  const foundReviewedBook = reviewedBook.filter((book) => book.book_id === id);
+  const isReviewed = foundReviewedBook.length > 0;
 
   const handleBookReview = () => {
     console.log("Book review was clicked!");
@@ -78,7 +81,10 @@ const BookmarkCard = ({
               <span>{language}</span>
             </p>
 
-            <Button text={"Review this book"} review={handleBookReview} />
+            <Button
+              text={isReviewed ? "Edit book review" : "Review this book"}
+              review={handleBookReview}
+            />
           </div>
         </div>
 
