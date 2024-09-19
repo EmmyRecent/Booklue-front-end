@@ -1,12 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import { google } from "../../assets/icons";
-import { useState } from "react";
-// import { AuthContext } from "../../context/AuthContext";
+import { useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 
 const LogIn = () => {
-  // const { setIsAuthenticated, setUser } = useContext(AuthContext);
+  const { setIsAuthenticated, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const [inputValue, setInputValue] = useState({
     email: "",
@@ -42,6 +42,9 @@ const LogIn = () => {
 
       if (response.status === 200) {
         console.log("Login successful", response.data);
+
+        setIsAuthenticated(true);
+        setUser(response.data.user);
 
         navigate("/profile");
       } else {

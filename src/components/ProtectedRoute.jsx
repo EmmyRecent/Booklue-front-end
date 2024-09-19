@@ -15,6 +15,7 @@ const ProtectedRoute = () => {
           { withCredentials: true },
         );
         const { isAuthenticated } = response.data;
+        console.log("Auth:", isAuthenticated);
       } catch (err) {
         console.error("Failed to authenticate user:", err);
       }

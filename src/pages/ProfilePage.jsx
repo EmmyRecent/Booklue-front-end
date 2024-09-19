@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
-import { Form, useActionData } from "react-router-dom";
+import { Form, useActionData, useNavigate } from "react-router-dom";
 import EditProfile from "../components/EditProfile";
 import axios from "axios";
 import BookmarkCard from "../components/BookmarkCard";
@@ -11,13 +11,14 @@ import { BookContext } from "../context/BookContext";
 const ProfilePage = () => {
   const data = useActionData();
   const body = document.querySelector("body");
-  const { user, setIsAuthenticated, isAuthenticated, setUser } =
+  const { user, isAuthenticated, setUser, setIsAuthenticated } =
     useContext(AuthContext);
   const { reviewedBook, setReviewedBook } = useContext(BookContext);
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showReviewBook, setShowReviewBook] = useState(false);
   const [userBooks, setUserBooks] = useState([]);
   const [sortBy, setSortBy] = useState("Title");
+  const navigate = useNavigate();
 
   console.log("User books:", userBooks);
   console.log("User authenticated:", isAuthenticated);
@@ -33,11 +34,31 @@ const ProfilePage = () => {
     body.classList.remove("modal-open");
   }
 
-  // Handle logout of user.
-  const handleLogout = () => {
+  // Handle user logout.
+  const handleLogout = async () => {
     console.log("logged out!");
 
-    setIsAuthenticated(false);
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/logout",
+        {},
+        { withCredentials: true },
+      );
+
+      if (response.status === 200) {
+        console.log("User logged out!");
+
+        setIsAuthenticated(false);
+        setUser(null);
+
+        // Redirect the user to the login page.
+        navigate("/account/login");
+      } else {
+        console.error("Failed to log out:", response.data);
+      }
+    } catch (err) {
+      console.error("Error logging user out:", err);
+    }
   };
 
   const handleChange = (e) => {
