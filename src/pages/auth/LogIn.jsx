@@ -1,28 +1,70 @@
-import { Form, Link, useActionData, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import { google } from "../../assets/icons";
-import { useContext, useEffect } from "react";
-import { AuthContext } from "../../context/AuthContext";
+import { useState } from "react";
+// import { AuthContext } from "../../context/AuthContext";
+import axios from "axios";
 
 const LogIn = () => {
-  const { setIsAuthenticated, setUser } = useContext(AuthContext);
-  const data = useActionData();
+  // const { setIsAuthenticated, setUser } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [inputValue, setInputValue] = useState({
+    email: "",
+    password: "",
+  });
 
-  useEffect(() => {
-    if (data && data.user) {
-      setUser(data.user);
-      setIsAuthenticated(true);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-      navigate("/profile");
+    setInputValue((prevValue) => {
+      return {
+        ...prevValue,
+        [name]: value,
+      };
+    });
+  };
+
+  const handleLogin = async (e) => {
+    console.log("Login button clicked!");
+    e.preventDefault();
+
+    const submission = {
+      email: inputValue.email,
+      password: inputValue.password,
+    };
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/login",
+        submission,
+        { withCredentials: true },
+      );
+
+      if (response.status === 200) {
+        console.log("Login successful", response.data);
+
+        navigate("/profile");
+      } else {
+        console.log("Unexpected response", response);
+      }
+    } catch (err) {
+      console.error("Error submitting login details", err);
+
+      // Customizing the error message.
+      let errorMessage = "Failed to submit login details";
+
+      if (err.message && err.response.status === 401) {
+        errorMessage = "Invalid email or password. please try again";
+      }
+
+      console.log(errorMessage);
     }
-  }, [data, setIsAuthenticated, setUser, navigate]);
+  };
 
   return (
     <section className="flex min-h-[70vh] items-center justify-center">
-      <Form
+      <form
         method="post"
-        action="/account/login"
         className="wrapper rounded-round border border-secondaryColor px-4 py-8 shadow-2xl lg:max-w-[50%] lg:p-8"
       >
         <div className="flex flex-col gap-2 lg:flex-row lg:items-center lg:justify-between lg:gap-4">
@@ -33,6 +75,8 @@ const LogIn = () => {
                 <input
                   type="text"
                   name="email"
+                  value={inputValue.email}
+                  onChange={handleChange}
                   placeholder="Your email address"
                 />
               </div>
@@ -41,16 +85,18 @@ const LogIn = () => {
                 <input
                   type="password"
                   name="password"
+                  value={inputValue.password}
+                  onChange={handleChange}
                   placeholder="Your password"
                 />
               </div>
             </div>
 
-            <Button text="Login" />
+            <Button text="Login" login={handleLogin} />
 
-            {data && data.error && (
+            {/* {data && data.error && (
               <p className="pt-4 text-sm text-red-500">{data.error}!</p>
-            )}
+            )} */}
           </div>
 
           <p className="my-2 text-center text-lg font-medium text-whiteColor">
@@ -72,7 +118,7 @@ const LogIn = () => {
             click here to sign up
           </Link>
         </p>
-      </Form>
+      </form>
     </section>
   );
 };

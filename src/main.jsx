@@ -26,7 +26,7 @@ import ProtectedRoute from "./components/ProtectedRoute.jsx";
 // Actions
 import {
   editProfileAction,
-  loginAction,
+  // loginAction,
   searchLoader,
   signUpAction,
 } from "./constants/index.js";
@@ -53,7 +53,7 @@ const router = createBrowserRouter(
       />
 
       <Route path="account" element={<AccountLayout />}>
-        <Route path="login" element={<LogIn />} action={loginAction} />
+        <Route path="login" element={<LogIn />} />
         <Route path="register" element={<SignUp />} action={signUpAction} />
       </Route>
 

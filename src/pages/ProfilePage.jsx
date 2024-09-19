@@ -11,7 +11,8 @@ import { BookContext } from "../context/BookContext";
 const ProfilePage = () => {
   const data = useActionData();
   const body = document.querySelector("body");
-  const { user, setIsAuthenticated, setUser } = useContext(AuthContext);
+  const { user, setIsAuthenticated, isAuthenticated, setUser } =
+    useContext(AuthContext);
   const { reviewedBook, setReviewedBook } = useContext(BookContext);
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showReviewBook, setShowReviewBook] = useState(false);
@@ -19,6 +20,8 @@ const ProfilePage = () => {
   const [sortBy, setSortBy] = useState("Title");
 
   console.log("User books:", userBooks);
+  console.log("User authenticated:", isAuthenticated);
+  console.log("User from the server:", user);
 
   const handleClick = () => {
     setShowEditProfile(true);
