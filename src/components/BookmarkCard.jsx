@@ -88,7 +88,7 @@ const BookmarkCard = ({
           </div>
         </div>
 
-        {/* Icon */}
+        {/* Bookmark icon */}
         <div className="tooltip">
           <i
             className="bx bxs-bookmark text-3xl text-secondaryColor lg:text-[2rem]"

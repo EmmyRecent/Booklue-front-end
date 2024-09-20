@@ -6,7 +6,7 @@ import StarRating from "./StarRating";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 
-const ReviewBook = ({ close }) => {
+const ReviewBook = ({ close, reviewError }) => {
   const { reviewBook, setReviewedBook } = useContext(BookContext);
   const { user } = useContext(AuthContext);
   const [rating, setRating] = useState(reviewBook.rating); // come back here.
@@ -33,10 +33,14 @@ const ReviewBook = ({ close }) => {
         reviewData,
       );
 
-      // console.log("From the server:", response.data.data);
       setReviewedBook(response.data.data);
     } catch (err) {
       console.error("Failed to add Review Books!", err);
+
+      if (err.response) {
+        console.log(err.response.data.message); // Come back to this.
+        reviewError(err.response.data.message);
+      }
     }
 
     console.log("Review Data:", reviewData);
@@ -45,6 +49,8 @@ const ReviewBook = ({ close }) => {
     setNote("");
     setRating("");
   };
+
+  // TODO: FIX: Look at the date reviewed the date is displaying the date read 1 day behind the actual date the user read that book.
 
   return (
     <div className="mx-4 h-full w-full bg-transparent text-whiteColor lg:max-w-[700px]">

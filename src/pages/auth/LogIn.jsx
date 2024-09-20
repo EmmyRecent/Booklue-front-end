@@ -1,9 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/Button";
 import { google } from "../../assets/icons";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
+import ErrorMessage from "../../components/ErrorMessage";
+import SuccessMessage from "../../components/successMessage";
 
 const LogIn = () => {
   const { setIsAuthenticated, setUser } = useContext(AuthContext);
@@ -12,6 +14,10 @@ const LogIn = () => {
     email: "",
     password: "",
   });
+  const [isVisible, setIsVisible] = useState(false); // Track error and message visibility.
+  // A state to track the message from the server.
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -42,27 +48,47 @@ const LogIn = () => {
 
       if (response.status === 200) {
         console.log("Login successful", response.data);
-
         setIsAuthenticated(true);
         setUser(response.data.user);
+        setSuccessMessage("Login successful!");
 
         navigate("/profile");
-      } else {
-        console.log("Unexpected response", response);
       }
+
+      console.log("Unexpected response:", response);
     } catch (err) {
       console.error("Error submitting login details", err);
 
-      // Customizing the error message.
-      let errorMessage = "Failed to submit login details";
-
-      if (err.message && err.response.status === 401) {
-        errorMessage = "Invalid email or password. please try again";
+      if (err.response) {
+        console.log(err.response.data.error);
+        setErrorMessage(err.response.data.error);
       }
-
-      console.log(errorMessage);
     }
   };
+
+  useEffect(() => {
+    if (errorMessage) {
+      setIsVisible(true); // Show the error.
+
+      const timer = setTimeout(() => {
+        setIsVisible(false); // start fade out.
+        setTimeout(() => setErrorMessage(""), 500); // Clear error after fade out.
+      }, 5000); // wait 3 secs before starting fade-out
+
+      return () => clearTimeout(timer); // Cleanup the timeout if the component unmounts.
+    }
+
+    if (successMessage) {
+      setIsVisible(true); // Show the error.
+
+      const timer = setTimeout(() => {
+        setIsVisible(false); // start fade out.
+        setTimeout(() => successMessage(""), 500); // Clear error after fade out.
+      }, 4000); // wait 3 secs before starting fade-out
+
+      return () => clearTimeout(timer); // Cleanup the timeout if the component unmounts.
+    }
+  }, [errorMessage, successMessage]);
 
   return (
     <section className="flex min-h-[70vh] items-center justify-center">
@@ -97,9 +123,13 @@ const LogIn = () => {
 
             <Button text="Login" login={handleLogin} />
 
-            {/* {data && data.error && (
-              <p className="pt-4 text-sm text-red-500">{data.error}!</p>
-            )} */}
+            {errorMessage && (
+              <ErrorMessage message={errorMessage} isVisible={isVisible} />
+            )}
+
+            {successMessage && (
+              <SuccessMessage message={successMessage} isVisible={isVisible} />
+            )}
           </div>
 
           <p className="my-2 text-center text-lg font-medium text-whiteColor">

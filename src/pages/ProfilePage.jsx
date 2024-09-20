@@ -7,6 +7,7 @@ import BookmarkCard from "../components/BookmarkCard";
 import ReviewBook from "../components/ReviewBook";
 import ReviewedBookCard from "../components/ReviewedBookCard";
 import { BookContext } from "../context/BookContext";
+import ErrorMessage from "../components/ErrorMessage";
 
 const ProfilePage = () => {
   const data = useActionData();
@@ -19,10 +20,46 @@ const ProfilePage = () => {
   const [userBooks, setUserBooks] = useState([]);
   const [sortBy, setSortBy] = useState("Title");
   const navigate = useNavigate();
+  const [isVisible, setIsVisible] = useState(false); // Track error and message visibility.
+  const [errorMessage, setErrorMessage] = useState("");
+  const [sortReviewBy, setSortReviewBy] = useState("Title");
 
   console.log("User books:", userBooks);
   console.log("User authenticated:", isAuthenticated);
   console.log("User from the server:", user);
+  console.log("Error message:", errorMessage);
+  console.log("Sort Review By:", sortReviewBy);
+
+  useEffect(() => {
+    if (data?.error) {
+      setErrorMessage(data.error);
+      setIsVisible(true); // Show the error.
+
+      const timer = setTimeout(() => {
+        setIsVisible(false); // start fade out.
+        setTimeout(() => setErrorMessage(""), 500); // Clear error after fade out.
+      }, 5000); // wait 3 secs before starting fade-out
+
+      return () => clearTimeout(timer); // Cleanup the timeout if the component unmounts.
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (errorMessage) {
+      setIsVisible(true); // Show the error.
+
+      const timer = setTimeout(() => {
+        setIsVisible(false); // start fade out.
+        setTimeout(() => setErrorMessage(""), 500); // Clear error after fade out.
+      }, 4000); // wait 3 secs before starting fade-out
+
+      return () => clearTimeout(timer); // Cleanup the timeout if the component unmounts.
+    }
+  }, [errorMessage]);
+
+  if (data) {
+    console.log("Data error:", data.error);
+  }
 
   const handleClick = () => {
     setShowEditProfile(true);
@@ -65,7 +102,16 @@ const ProfilePage = () => {
     setSortBy(e.target.value);
   };
 
-  console.log("Sort by:", sortBy);
+  const handleSortChange = (e) => {
+    setSortReviewBy(e.target.value);
+  };
+
+  // A function to handle the error message of review books.
+  const handleReviewError = (message) => {
+    console.log("Review error:", message);
+
+    setErrorMessage(message);
+  };
 
   // Updating the user data when profile has been edited.
   useEffect(() => {
@@ -108,6 +154,24 @@ const ProfilePage = () => {
 
     getUserBooks();
   }, [user.id, sortBy]);
+
+  useEffect(() => {
+    const getSortReviewBook = async () => {
+      try {
+        const result = await axios.get(
+          "http://localhost:5000/api/getSortUserBooks",
+          { params: { id: user.id, sort: sortReviewBy } },
+        );
+
+        setReviewedBook(result.data.data);
+        console.table("Sorted books:", result.data.data);
+      } catch (err) {
+        console.error("Error getting review books by sorting", err);
+      }
+    };
+
+    getSortReviewBook();
+  }, [setReviewedBook, sortReviewBy, user.id]);
 
   // Get users reviewed books.
   useEffect(() => {
@@ -219,11 +283,15 @@ const ProfilePage = () => {
               <Form>
                 <label htmlFor="Sort by"></label>
 
-                <select name="sort">
+                <select
+                  name="sortReview"
+                  onChange={handleSortChange}
+                  value={sortReviewBy}
+                >
                   <option value="Title">Title</option>
                   <option value="Author">Author</option>
-                  <option value="date">Date</option>
-                  <option value="date">Rating</option>
+                  <option value="read_date">Date</option>
+                  <option value="rating">Rating</option>
                 </select>
               </Form>
             </div>
@@ -255,7 +323,10 @@ const ProfilePage = () => {
         <div
           className={`overlay pb-[20px] pt-[20px] ${showReviewBook ? "show" : ""}`}
         >
-          <ReviewBook close={() => setShowReviewBook(false)} />
+          <ReviewBook
+            close={() => setShowReviewBook(false)}
+            reviewError={handleReviewError}
+          />
         </div>
 
         <div
@@ -266,6 +337,10 @@ const ProfilePage = () => {
             Log out
           </p>
         </div>
+
+        {errorMessage && (
+          <ErrorMessage message={errorMessage} isVisible={isVisible} />
+        )}
       </div>
     </section>
   );

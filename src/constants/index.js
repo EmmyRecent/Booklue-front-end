@@ -50,7 +50,7 @@ export const editProfileAction = async ({ request }) => {
       err.response?.data || err.message,
     );
 
-    if (err.response && err.response.status === 400) {
+    if (err.response) {
       return { error: err.response.data.message };
     }
 

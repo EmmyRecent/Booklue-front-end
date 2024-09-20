@@ -1,10 +1,9 @@
-import { Form, useActionData } from "react-router-dom";
+import { Form } from "react-router-dom";
 import Button from "./Button";
 import { useContext, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const EditProfile = ({ close }) => {
-  const data = useActionData();
   const { user } = useContext(AuthContext);
   const [emailValue, setEmailValue] = useState(user.email);
   const [base64Image, setBase64Image] = useState(""); // state to store base 64 image.
@@ -163,10 +162,6 @@ const EditProfile = ({ close }) => {
         </div>
 
         <hr className="absolute left-0 right-0 bg-whiteColor" />
-
-        {data && data.error && (
-          <p className="pt-4 text-sm text-red-800">{data.error}!</p>
-        )}
 
         <div className="pt-6">
           <div className="flex items-center justify-end gap-4">
