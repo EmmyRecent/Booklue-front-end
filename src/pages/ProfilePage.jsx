@@ -262,7 +262,9 @@ const ProfilePage = () => {
           className="my-8 inline-block cursor-pointer rounded-round bg-secondaryColor px-4 py-2"
           onClick={handleLogout}
         >
-          <p className="text-[1rem] font-medium lg:text-lg">Log out</p>
+          <p className="text-[1rem] font-medium text-whiteColor lg:text-lg">
+            Log out
+          </p>
         </div>
       </div>
     </section>

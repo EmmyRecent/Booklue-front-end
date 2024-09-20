@@ -24,12 +24,7 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
 
 // Actions
-import {
-  editProfileAction,
-  // loginAction,
-  searchLoader,
-  signUpAction,
-} from "./constants/index.js";
+import { editProfileAction, searchLoader } from "./constants/index.js";
 
 // Contexts
 import { AuthProvider } from "./context/AuthContext.jsx";
@@ -54,7 +49,7 @@ const router = createBrowserRouter(
 
       <Route path="account" element={<AccountLayout />}>
         <Route path="login" element={<LogIn />} />
-        <Route path="register" element={<SignUp />} action={signUpAction} />
+        <Route path="register" element={<SignUp />} />
       </Route>
 
       <Route element={<ProtectedRoute />}>

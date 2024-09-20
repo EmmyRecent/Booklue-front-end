@@ -6,6 +6,7 @@ const Button = ({
   review,
   reviewSave,
   login,
+  signUp,
 }) => {
   return (
     <button
@@ -16,6 +17,7 @@ const Button = ({
         if (review) review();
         if (reviewSave) reviewSave();
         if (login) login(e);
+        if (signUp) signUp(e);
       }}
     >
       {searchBookmark && (
