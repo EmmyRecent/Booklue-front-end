@@ -1,6 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+// Style sheet.
 import "./index.css";
+
 // Router
 import {
   createBrowserRouter,
@@ -9,12 +11,13 @@ import {
   Route,
 } from "react-router-dom";
 
-// Layouts
+// Layouts.
 import RootLayout from "./layouts/RootLayout.jsx";
 import AccountLayout from "./layouts/AccountLayout.jsx";
 
 // Pages
 import Home from "./pages/Home.jsx";
+import About from "./pages/About.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import LogIn from "./pages/auth/LogIn.jsx";
 import SignUp from "./pages/auth/SignUp.jsx";
@@ -22,24 +25,21 @@ import SearchView from "./components/SearchView.jsx";
 import SearchViewError from "./components/SearchViewError.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import ReviewPostDetails from "./components/ReviewPostDetails.jsx";
 
-// Actions
+// Actions & Loaders.
 import { editProfileAction, searchLoader } from "./constants/index.js";
 
-// Contexts
+// Contexts.
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { BookProvider } from "./context/BookContext.jsx";
-import ReviewPostDetails from "./components/ReviewPostDetails.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
       <Route index element={<Home />} />
       <Route path="post/:userId/:bookId" element={<ReviewPostDetails />} />
-      <Route
-        path="about"
-        element={<h1 className="wrapper">Hello world from about page</h1>}
-      />
+      <Route path="about" element={<About />} />
       <Route
         path="search"
         element={<SearchView />}

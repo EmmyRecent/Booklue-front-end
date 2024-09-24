@@ -98,6 +98,10 @@ a.active {
     @apply relative min-h-[50vh] bg-[url("/src/assets/images/bookImg.png")] bg-cover bg-center;
   }
 
+  .about-hero {
+    @apply relative min-h-screen bg-[url("/src/assets/images/about-img.jpg")] bg-cover bg-center;
+  }
+
   .input-group {
     @apply flex flex-col gap-1;
   }
@@ -139,6 +143,10 @@ a.active {
 
   .subheading {
     @apply text-xl capitalize text-secondaryColor lg:text-2xl;
+  }
+
+  .highlight {
+    @apply text-secondaryColor;
   }
 
   .book-content {
