@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Navigate, Outlet } from "react-router-dom";
 import axios from "axios";
+import { apiUrl } from "../constants";
 
 const ProtectedRoute = () => {
   const { isAuthenticated, authLoading } = useContext(AuthContext);
@@ -10,12 +11,10 @@ const ProtectedRoute = () => {
     // Wait until the authentication check completes.
     const checkAuth = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/auth/check",
-          { withCredentials: true },
-        );
+        const response = await axios.get(`${apiUrl}/api/auth/check`, {
+          withCredentials: true,
+        });
         const { isAuthenticated } = response.data;
-        console.log("Auth:", isAuthenticated);
       } catch (err) {
         console.error("Failed to authenticate user:", err);
       }
@@ -23,8 +22,6 @@ const ProtectedRoute = () => {
 
     checkAuth();
   }, []);
-
-  console.log("Authenticated:", isAuthenticated);
 
   if (authLoading) {
     // Optionally show a loading spinner or nothing while checking auth.

@@ -8,12 +8,12 @@ import ReviewBook from "../components/ReviewBook";
 import ReviewedBookCard from "../components/ReviewedBookCard";
 import { BookContext } from "../context/BookContext";
 import ErrorMessage from "../components/ErrorMessage";
+import { apiUrl } from "../constants";
 
 const ProfilePage = () => {
   const data = useActionData();
   const body = document.querySelector("body");
-  const { user, isAuthenticated, setUser, setIsAuthenticated } =
-    useContext(AuthContext);
+  const { user, setUser, setIsAuthenticated } = useContext(AuthContext);
   const { reviewedBook, setReviewedBook } = useContext(BookContext);
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [showReviewBook, setShowReviewBook] = useState(false);
@@ -23,12 +23,6 @@ const ProfilePage = () => {
   const [isVisible, setIsVisible] = useState(false); // Track error and message visibility.
   const [errorMessage, setErrorMessage] = useState("");
   const [sortReviewBy, setSortReviewBy] = useState("Title");
-
-  console.log("User books:", userBooks);
-  console.log("User authenticated:", isAuthenticated);
-  console.log("User from the server:", user);
-  console.log("Error message:", errorMessage);
-  console.log("Sort Review By:", sortReviewBy);
 
   useEffect(() => {
     if (data?.error) {
@@ -57,10 +51,6 @@ const ProfilePage = () => {
     }
   }, [errorMessage]);
 
-  if (data) {
-    console.log("Data error:", data.error);
-  }
-
   const handleClick = () => {
     setShowEditProfile(true);
   };
@@ -73,18 +63,14 @@ const ProfilePage = () => {
 
   // Handle user logout.
   const handleLogout = async () => {
-    console.log("logged out!");
-
     try {
       const response = await axios.post(
-        "http://localhost:5000/logout",
+        `${apiUrl}/logout`,
         {},
         { withCredentials: true },
       );
 
       if (response.status === 200) {
-        console.log("User logged out!");
-
         setIsAuthenticated(false);
         setUser(null);
 
@@ -108,22 +94,16 @@ const ProfilePage = () => {
 
   // A function to handle the error message of review books.
   const handleReviewError = (message) => {
-    console.log("Review error:", message);
-
     setErrorMessage(message);
   };
 
   // Updating the user data when profile has been edited.
   useEffect(() => {
     const getUser = async () => {
-      console.log("Getting user");
-
       try {
-        const result = await axios.get("http://localhost:5000/user", {
+        const result = await axios.get(`${apiUrl}/user`, {
           params: { email: user.email },
         });
-
-        console.log("Results:", result.data);
 
         setUser(result.data.user);
       } catch (err) {
@@ -136,15 +116,10 @@ const ProfilePage = () => {
   // Get users books.
   useEffect(() => {
     const getUserBooks = async () => {
-      console.log("Getting user books!");
-
       try {
-        const result = await axios.get(
-          "http://localhost:5000/api/getUserBooks",
-          {
-            params: { id: user.id, sort: sortBy },
-          },
-        );
+        const result = await axios.get(`${apiUrl}/api/getUserBooks`, {
+          params: { id: user.id, sort: sortBy },
+        });
 
         setUserBooks(result.data.data);
       } catch (err) {
@@ -155,36 +130,13 @@ const ProfilePage = () => {
     getUserBooks();
   }, [user.id, sortBy]);
 
-  useEffect(() => {
-    const getSortReviewBook = async () => {
-      try {
-        const result = await axios.get(
-          "http://localhost:5000/api/getSortUserBooks",
-          { params: { id: user.id, sort: sortReviewBy } },
-        );
-
-        setReviewedBook(result.data.data);
-        console.table("Sorted books:", result.data.data);
-      } catch (err) {
-        console.error("Error getting review books by sorting", err);
-      }
-    };
-
-    getSortReviewBook();
-  }, [setReviewedBook, sortReviewBy, user.id]);
-
   // Get users reviewed books.
   useEffect(() => {
     const getReviewedBook = async () => {
-      console.log("Getting reviewed Books!");
-
       try {
-        const result = await axios.get(
-          "http://localhost:5000/api/getUserReviewedBooks",
-          {
-            params: { id: user.id },
-          },
-        );
+        const result = await axios.get(`${apiUrl}/api/getUserReviewedBooks`, {
+          params: { id: user.id, sort: sortReviewBy },
+        });
 
         setReviewedBook(result.data.data);
       } catch (err) {
@@ -193,7 +145,7 @@ const ProfilePage = () => {
     };
 
     getReviewedBook();
-  }, [user.id, setReviewedBook, userBooks]);
+  }, [user.id, setReviewedBook, userBooks, sortReviewBy]);
 
   return (
     <section>

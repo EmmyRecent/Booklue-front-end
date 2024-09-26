@@ -3,6 +3,7 @@ import axios from "axios";
 import Button from "./Button";
 import { AuthContext } from "../context/AuthContext";
 import { BookContext } from "../context/BookContext";
+import { apiUrl } from "../constants";
 
 const BookmarkCard = ({
   id,
@@ -24,8 +25,6 @@ const BookmarkCard = ({
   const isReviewed = foundReviewedBook.length > 0;
 
   const handleBookReview = () => {
-    console.log("Book review was clicked!");
-
     setShowReviewBook(true);
 
     setReviewBook({
@@ -41,17 +40,10 @@ const BookmarkCard = ({
   };
 
   const handleRemoveBookmark = async () => {
-    console.log("Removing from bookmark...");
-
     try {
-      const response = await axios.delete(
-        "http://localhost:5000/api/deleteUserBook",
-        {
-          params: { user_id: user.id, book_id: id },
-        },
-      );
-
-      console.log(response.data.message); // Success message.
+      const response = await axios.delete(`${apiUrl}/api/deleteUserBook`, {
+        params: { user_id: user.id, book_id: id },
+      });
 
       // Optionally update state to remove the deleted book from the UI
       setUserBooks(userBooks.filter((book) => book.id !== id));

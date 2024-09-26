@@ -1,17 +1,29 @@
 import { Link } from "react-router-dom";
-import { demo1, demo2, demo3, flyBook } from "../assets/images";
+import { aboutImg, demo1, demo2, demo3, flyBook } from "../assets/images";
 import { coreFeatures, upcomingFeatures } from "../constants";
 import FeaturesCard from "../components/FeaturesCard";
 import UpcomingFeaturesCard from "../components/UpcomingFeaturesCard";
+import { useEffect } from "react";
 
 const About = () => {
+  const heroImage = aboutImg;
+
+  // Preload images when the component mounts
+  useEffect(() => {
+    const img = new Image();
+    img.src = heroImage;
+  }, [heroImage]);
+
   return (
     <>
       {/* Hero */}
-      <section className="about-hero">
+      <section
+        className="about-hero"
+        style={{ backgroundImage: `url(${heroImage})` }}
+      >
         <div className="absolute inset-0 flex items-center bg-black bg-opacity-35">
           <div className="wrapper flex flex-col gap-2">
-            <h1 className="text-3xl text-whiteColor lg:text-4xl">
+            <h1 className="text-3xl text-whiteColor lg:text-[2.8rem]">
               Your Reading Journey, Re-imagined
             </h1>
 
@@ -32,7 +44,7 @@ const About = () => {
         <div className="wrapper text-whiteColor">
           <div className="py-4 lg:py-8">
             <h1 className="text-2xl text-secondaryColor lg:text-3xl">
-              Welcome to Bookle:{" "}
+              Welcome to Booklue:{" "}
               <span className="text-whiteColor">
                 Your Personal Reading Companion
               </span>
@@ -43,10 +55,10 @@ const About = () => {
             <p className="mb-4">
               Ever finish a book and struggle to recall the most important
               details? That&apos;s exactly where{" "}
-              <span className="highlight">Bookle</span> began. Born from a love
+              <span className="highlight">Booklue</span> began. Born from a love
               of reading and the need to remember and reflect,{" "}
-              <span className="highlight">Bookle</span> is more than just a tool
-              — it&apos;s your ultimate social space for everything books!
+              <span className="highlight">Booklue</span> is more than just a
+              tool — it&apos;s your ultimate social space for everything books!
             </p>
 
             <div>
@@ -57,7 +69,7 @@ const About = () => {
               />
 
               <p className="mb-4">
-                With <span className="highlight">Bookle</span>, you can easily
+                With <span className="highlight">Booklue</span>, you can easily
                 log every book you&apos;ve read, jot down your thoughts, and
                 assign ratings. Your personal library showcases when you read
                 them, your notes, and reviews, all in one place. Even better?
@@ -68,17 +80,17 @@ const About = () => {
 
               <p className="mb-4">
                 But that&apos;s not all! The best part of{" "}
-                <span className="highlight">Bookle</span> is that you don&apos;t
-                have to keep your book journey to yourself. Share your reading
-                experience with others by making your notes and reviews public
-                for other users to discover. And in{" "}
+                <span className="highlight">Booklue</span> is that you
+                don&apos;t have to keep your book journey to yourself. Share
+                your reading experience with others by making your notes and
+                reviews public for other users to discover. And in{" "}
                 <span className="highlight">version 2.0</span>, you&apos;ll have
                 messaging, commenting, and liking features to connect with
                 fellow book lovers even more.
               </p>
 
               <p>
-                <span className="highlight">Bookle</span> isn&apos;t just an
+                <span className="highlight">Booklue</span> isn&apos;t just an
                 app—it&apos;s a community. So dive in, explore, and let&apos;s
                 build a world where your reading journey comes alive, one book
                 at a time.
@@ -108,10 +120,10 @@ const About = () => {
 
           <p className="py-4">Beautiful UI 😉</p>
 
-          <div className="relative flex items-center overflow-y-scroll rounded-round border border-secondaryColor p-4 lg:justify-center">
+          <div className="visual relative flex items-center overflow-y-scroll rounded-round border border-secondaryColor p-4 lg:justify-center">
             <div className="flex gap-4">
-              <img src={demo2} alt="demo2" className="max-w-[300px]" />
               <img src={demo3} alt="demo3" className="max-w-[300px]" />
+              <img src={demo2} alt="demo2" className="max-w-[300px]" />
               <img src={demo1} alt="demo1" className="max-w-[300px]" />
             </div>
           </div>
@@ -126,7 +138,11 @@ const About = () => {
           </h2>
 
           {/* Testimonials goes here */}
-          <div></div>
+          <div className="flex min-h-[20vh] items-center justify-center">
+            <p className="text-lg font-medium text-grayColor lg:text-xl">
+              No user reviews yet!
+            </p>
+          </div>
         </div>
       </section>
 

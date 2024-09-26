@@ -1,4 +1,7 @@
 import axios from "axios";
+import { faker } from "@faker-js/faker";
+
+export const apiUrl = import.meta.env.VITE_API_URL;
 
 export const navLinks = [
   { label: "Home", href: "/" },
@@ -33,7 +36,7 @@ export const coreFeatures = [
   {
     title: "Share Reviews with the Community",
     description:
-      "Make your notes and reviews public to share your reading experience with other users in the Bookle community.",
+      "Make your notes and reviews public to share your reading experience with other users in the Booklue community.",
     icon: "bx bxs-share",
   },
   {
@@ -65,6 +68,68 @@ export const upcomingFeatures = [
   },
 ];
 
+export const generateRandomUserProfile = () => {
+  const adjectives = [
+    "Brave",
+    "Clever",
+    "Curious",
+    "Eager",
+    "Mighty",
+    "Bold",
+    "Gentle",
+    "Quick",
+    "Swift",
+    "Calm",
+    "Witty",
+    "Silent",
+    "Bright",
+    "Lucky",
+    "Daring",
+    "Sharp",
+    "Happy",
+    "Kind",
+    "Smart",
+    "Wild",
+  ];
+
+  const nouns = [
+    "Tiger",
+    "Phoenix",
+    "Eagle",
+    "Wizard",
+    "Panther",
+    "Wolf",
+    "Dragon",
+    "Falcon",
+    "Bear",
+    "Lion",
+    "Knight",
+    "Viking",
+    "Ninja",
+    "Samurai",
+    "Sage",
+    "Hawk",
+    "Raven",
+    "Fox",
+    "Otter",
+    "Shark",
+  ];
+
+  // Randomly pick one adjective and one noun
+  const randomAdjective =
+    adjectives[Math.floor(Math.random() * adjectives.length)];
+  const randomNoun = nouns[Math.floor(Math.random() * nouns.length)];
+
+  // Add a random number at the end to ensure uniqueness
+  const randomNumber = Math.floor(Math.random() * 10000); // 4 digit random number
+
+  // Generate a  user profile.
+  return {
+    username: `${randomAdjective}${randomNoun}${randomNumber}`,
+    avatar: faker.image.avatar(),
+  };
+};
+
 export const searchLoader = async ({ request }) => {
   const url = new URL(request.url);
   const query = url.searchParams.get("q");
@@ -72,7 +137,7 @@ export const searchLoader = async ({ request }) => {
   if (!query) return { books: { docs: [] } };
 
   try {
-    const response = await axios.get(`http://localhost:5000/api/search`, {
+    const response = await axios.get(`${apiUrl}/api/search`, {
       params: { q: query },
     });
 
@@ -97,11 +162,9 @@ export const editProfileAction = async ({ request }) => {
 
   // Post request to the server.
   try {
-    const response = await axios.post("http://localhost:5000/editProfile", {
+    const response = await axios.post(`${apiUrl}/editProfile`, {
       submission,
     });
-
-    console.log("Edit profile response:", response.data);
 
     return { message: response.data };
   } catch (err) {

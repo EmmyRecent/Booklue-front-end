@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 const ReviewPost = ({
   author,
   cover_image,
-  name,
+  username,
   notes,
   profile_picture,
   rating,
@@ -47,14 +47,18 @@ const ReviewPost = ({
         <div className="flex flex-col gap-2">
           {/* Profile */}
           <div className="mr-auto flex w-auto cursor-pointer items-center gap-2 rounded-round bg-grayColor px-3 py-2">
-            <img
-              src={profile_picture}
-              alt="profile picture"
-              width={30}
-              height={30}
-              className="rounded-full"
-            />
-            <p className="text-whiteColor">{name}</p>
+            {profile_picture ? (
+              <img
+                src={profile_picture}
+                alt="profile picture"
+                width={25}
+                height={25}
+                className="rounded-full"
+              />
+            ) : (
+              <i className="bx bxs-user-circle text-[30px] text-secondaryColor"></i>
+            )}
+            <p className="text-whiteColor">{username}</p>
           </div>
 
           <h4 className="text-lg font-medium text-secondaryColor md:text-xl">

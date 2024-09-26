@@ -2,6 +2,7 @@ import { useContext } from "react";
 import Button from "./Button";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import { apiUrl } from "../constants";
 
 const BooksCard = ({
   title,
@@ -20,8 +21,6 @@ const BooksCard = ({
   const coverUrl = imgUrl({ isbn, cover_edition_key, olid });
 
   const handleBookmark = async () => {
-    console.log("Bookmarked button clicked!");
-
     const data = {
       title: title,
       author: author_name.join(", "),
@@ -31,12 +30,7 @@ const BooksCard = ({
 
     if (isAuthenticated) {
       try {
-        const response = await axios.post(
-          "http://localhost:5000/api/addBookmark",
-          data,
-        );
-
-        console.log("Book data = ", response.data);
+        const response = await axios.post(`${apiUrl}/api/addBookmark`, data);
 
         if (response.status === 200) {
           const { id: bookId } = response.data.data; // Extract the new book's Id.
@@ -51,7 +45,7 @@ const BooksCard = ({
           };
 
           // Add books to user's reading list.
-          await axios.post("http://localhost:5000/api/userBooks", userBookData);
+          await axios.post(`${apiUrl}/api/userBooks`, userBookData);
 
           setMessage(response.data.message);
         }

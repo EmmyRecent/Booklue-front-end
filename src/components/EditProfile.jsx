@@ -101,7 +101,7 @@ const EditProfile = ({ close }) => {
               name="username"
               placeholder="Your username"
             />
-            <p className="mb-2 text-sm lg:text-lg">www.bookly.com/@username</p>
+            <p className="mb-2 text-sm lg:text-lg">www.Booklue.com/@username</p>
             <p className="text-sm lg:text-lg">
               Usernames can only contain letters, numbers, underscores, and
               periods. Changing your username will also change your profile

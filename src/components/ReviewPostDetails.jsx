@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { apiUrl } from "../constants";
 
 const ReviewPostDetails = () => {
   const { userId, bookId } = useParams();
@@ -23,7 +24,7 @@ const ReviewPostDetails = () => {
     console.error("No read_date available");
   }
 
-  console.log("Formatted date:", formattedDate);
+  // console.log("Formatted date:", formattedDate);
 
   // A function to generate star icons based on the rating.
   const renderStars = (rating) => {
@@ -53,7 +54,7 @@ const ReviewPostDetails = () => {
     const getReviewPostsDetails = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/getReviewPostsDetails",
+          `${apiUrl}/api/getReviewPostsDetails`,
           {
             params: { userId, bookId },
           },
@@ -78,17 +79,21 @@ const ReviewPostDetails = () => {
         <img
           src={bookDetails.cover_image}
           alt={bookDetails.title}
-          className="w-full lg:max-w-[300px]"
+          className="h-full w-full lg:max-h-[700px] lg:max-w-[300px]"
         />
 
         <div className="flex w-full flex-col gap-4 rounded-round border border-secondaryColor p-3">
           <div className="mr-auto flex w-auto cursor-pointer items-center gap-2 rounded-round bg-grayColor px-3 py-2">
-            <img
-              src={bookDetails.profile_picture}
-              alt="profile picture"
-              className="w-full max-w-[50px] rounded-full"
-            />
-            <p className="text-whiteColor">{bookDetails.name}</p>
+            {bookDetails.profile_picture ? (
+              <img
+                src={bookDetails.profile_picture}
+                alt="profile picture"
+                className="w-full max-w-[40px] rounded-full"
+              />
+            ) : (
+              <i className="bx bxs-user-circle text-[30px] text-secondaryColor"></i>
+            )}
+            <p className="text-whiteColor">{bookDetails.username}</p>
           </div>
 
           <h4 className="text-lg font-medium text-secondaryColor md:text-xl">

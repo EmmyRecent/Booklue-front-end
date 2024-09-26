@@ -91,7 +91,7 @@ a.active {
   }
 
   .hero {
-    @apply relative min-h-screen bg-[url("/src/assets/images/hero-img.png")] bg-cover bg-center;
+    @apply relative min-h-screen w-full bg-cover bg-center;
   }
 
   .account-hero {
@@ -99,7 +99,7 @@ a.active {
   }
 
   .about-hero {
-    @apply relative min-h-screen bg-[url("/src/assets/images/about-img.jpg")] bg-cover bg-center;
+    @apply relative min-h-screen bg-cover bg-center;
   }
 
   .input-group {
@@ -114,6 +114,14 @@ a.active {
     transition: all 0.3s ease-in-out;
   }
 
+  .overlays {
+    @apply fixed inset-0 flex justify-center overflow-y-hidden bg-slate-700 bg-opacity-70;
+    opacity: 0;
+    visibility: hidden;
+    z-index: 40;
+    transition: all 0.3s ease-in-out;
+  }
+
   .overlay::-webkit-scrollbar {
     display: none; /* Optional: Hides the scrollbar for a cleaner look */
   }
@@ -123,6 +131,11 @@ a.active {
   }
 
   .overlay.show {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .overlays.show {
     opacity: 1;
     visibility: visible;
   }
@@ -165,5 +178,13 @@ a.active {
   .fade-in-hidden {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
+  }
+
+  .visual::-webkit-scrollbar {
+    display: none; /* Optional: Hides the scrollbar for a cleaner look */
+  }
+
+  .visual {
+    scrollbar-width: none; /* Firefox */
   }
 }

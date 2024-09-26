@@ -5,6 +5,7 @@ import { BookContext } from "../context/BookContext";
 import StarRating from "./StarRating";
 import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
+import { apiUrl } from "../constants";
 
 const ReviewBook = ({ close, reviewError }) => {
   const { reviewBook, setReviewedBook } = useContext(BookContext);
@@ -14,8 +15,6 @@ const ReviewBook = ({ close, reviewError }) => {
   const [note, setNote] = useState(reviewBook.notes);
 
   const handleReviewBook = async () => {
-    console.log("Book saved!");
-
     const reviewData = {
       userId: user.id,
       bookId: reviewBook.id,
@@ -29,7 +28,7 @@ const ReviewBook = ({ close, reviewError }) => {
 
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/updateReviewBooks",
+        `${apiUrl}/api/updateReviewBooks`,
         reviewData,
       );
 
@@ -42,8 +41,6 @@ const ReviewBook = ({ close, reviewError }) => {
         reviewError(err.response.data.message);
       }
     }
-
-    console.log("Review Data:", reviewData);
 
     setDateRead("");
     setNote("");

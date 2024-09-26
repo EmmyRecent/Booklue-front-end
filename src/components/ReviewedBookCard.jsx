@@ -5,7 +5,8 @@ const ReviewedBookCard = ({
   book_id,
   cover_image,
   author,
-  name,
+  // name,
+  username,
   notes,
   profile_picture,
   rating,
@@ -54,7 +55,7 @@ const ReviewedBookCard = ({
               height={30}
               className="rounded-full"
             />
-            <p className="text-whiteColor">{name}</p>
+            <p className="text-whiteColor">{username}</p>
           </div>
 
           <h4 className="text-lg font-medium text-secondaryColor md:text-xl">

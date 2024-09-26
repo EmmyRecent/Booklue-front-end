@@ -6,6 +6,7 @@ import { AuthContext } from "../../context/AuthContext";
 import axios from "axios";
 import ErrorMessage from "../../components/ErrorMessage";
 import SuccessMessage from "../../components/successMessage";
+import { apiUrl } from "../../constants";
 
 const LogIn = () => {
   const { setIsAuthenticated, setUser } = useContext(AuthContext);
@@ -31,7 +32,6 @@ const LogIn = () => {
   };
 
   const handleLogin = async (e) => {
-    console.log("Login button clicked!");
     e.preventDefault();
 
     const submission = {
@@ -40,14 +40,11 @@ const LogIn = () => {
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/login",
-        submission,
-        { withCredentials: true },
-      );
+      const response = await axios.post(`${apiUrl}/login`, submission, {
+        withCredentials: true,
+      });
 
       if (response.status === 200) {
-        console.log("Login successful", response.data);
         setIsAuthenticated(true);
         setUser(response.data.user);
         setSuccessMessage("Login successful!");
@@ -132,9 +129,13 @@ const LogIn = () => {
             )}
           </div>
 
-          <p className="my-2 text-center text-lg font-medium text-whiteColor">
-            OR
-          </p>
+          {/* OR line */}
+          <div className="relative flex items-center justify-center py-2 lg:h-[200px] lg:py-0">
+            <div className="absolute z-10 h-[1px] w-full bg-secondaryColor lg:inset-0 lg:m-auto lg:h-full lg:w-[1px]" />
+            <div className="z-20 rounded-[50%] border border-secondaryColor bg-primaryColor p-[10px] font-medium text-whiteColor">
+              OR
+            </div>
+          </div>
 
           <div className="flex cursor-pointer gap-2 self-center rounded-round bg-whiteColor p-2">
             <img src={google} alt="google icon" width={24} height={24} />

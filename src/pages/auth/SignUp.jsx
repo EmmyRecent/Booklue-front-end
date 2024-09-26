@@ -6,6 +6,7 @@ import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import ErrorMessage from "../../components/ErrorMessage";
 import SuccessMessage from "../../components/successMessage";
+import { apiUrl, generateRandomUserProfile } from "../../constants";
 
 const SignUp = () => {
   const { setIsAuthenticated, setUser } = useContext(AuthContext);
@@ -17,6 +18,7 @@ const SignUp = () => {
   const [isVisible, setIsVisible] = useState(false); // Track error and message visibility.
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const randomProfile = generateRandomUserProfile();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,34 +33,27 @@ const SignUp = () => {
 
   // A function to handle sign up of the users.
   const handleSignup = async (e) => {
-    console.log("Sign up button was clicked!");
     e.preventDefault();
 
     const submission = {
       email: inputValue.email,
       password: inputValue.password,
+      profile_picture: randomProfile.avatar,
+      username: randomProfile.username,
     };
 
-    console.log(submission);
-
     try {
-      const response = await axios.post(
-        "http://localhost:5000/signup",
-        submission,
-        { withCredentials: true },
-      );
+      const response = await axios.post(`${apiUrl}/signup`, submission, {
+        withCredentials: true,
+      });
 
       if (response.status === 200) {
-        console.log("Sign up successful", response.data);
-
         setIsAuthenticated(true);
         setUser(response.data.user);
         setSuccessMessage("Login successful!");
 
         navigate("/profile");
       }
-
-      console.log("Unexpected response", response);
     } catch (err) {
       console.error("Error submitting sign in details", err);
 
@@ -135,9 +130,13 @@ const SignUp = () => {
             )}
           </div>
 
-          <p className="my-2 text-center text-lg font-medium text-whiteColor">
-            OR
-          </p>
+          {/* OR line */}
+          <div className="relative flex items-center justify-center py-2 lg:h-[200px] lg:py-0">
+            <div className="absolute z-10 h-[1px] w-full bg-secondaryColor lg:inset-0 lg:m-auto lg:h-full lg:w-[1px]" />
+            <div className="z-20 rounded-[50%] border border-secondaryColor bg-primaryColor p-[10px] font-medium text-whiteColor">
+              OR
+            </div>
+          </div>
 
           <div className="flex cursor-pointer gap-2 self-center rounded-round bg-whiteColor p-2">
             <img src={google} alt="google icon" width={24} height={24} />

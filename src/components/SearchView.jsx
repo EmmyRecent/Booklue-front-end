@@ -9,7 +9,7 @@ const SearchView = () => {
   const [isVisible, setIsVisible] = useState(false); // Track error and message visibility.
   const { books } = useLoaderData();
 
-  console.log("Books:", books);
+  // console.log("Books:", books);
 
   // Automatically hide the error after 4 seconds.
   useEffect(() => {

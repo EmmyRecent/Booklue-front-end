@@ -1,5 +1,6 @@
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
+import { apiUrl } from "../constants";
 
 export const AuthContext = createContext();
 
@@ -11,10 +12,9 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:5000/api/auth/check",
-          { withCredentials: true },
-        );
+        const response = await axios.get(`${apiUrl}/api/auth/check`, {
+          withCredentials: true,
+        });
         const { isAuthenticated, user } = response.data;
 
         setIsAuthenticated(isAuthenticated);
