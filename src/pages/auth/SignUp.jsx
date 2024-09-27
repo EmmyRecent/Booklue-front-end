@@ -64,6 +64,10 @@ const SignUp = () => {
     }
   };
 
+  const handleGoogleSignup = () => {
+    window.open("http://localhost:5000/auth/google", "_self");
+  };
+
   useEffect(() => {
     if (errorMessage) {
       setIsVisible(true); // Show the error.
@@ -138,7 +142,10 @@ const SignUp = () => {
             </div>
           </div>
 
-          <div className="flex cursor-pointer gap-2 self-center rounded-round bg-whiteColor p-2">
+          <div
+            className="flex cursor-pointer gap-2 self-center rounded-round bg-whiteColor p-2"
+            onClick={handleGoogleSignup}
+          >
             <img src={google} alt="google icon" width={24} height={24} />
             <p>Sign up with google</p>
           </div>

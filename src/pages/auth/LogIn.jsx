@@ -63,6 +63,10 @@ const LogIn = () => {
     }
   };
 
+  const handleGoogleLogin = () => {
+    window.open("http://localhost:5000/auth/google", "_self");
+  };
+
   useEffect(() => {
     if (errorMessage) {
       setIsVisible(true); // Show the error.
@@ -137,7 +141,10 @@ const LogIn = () => {
             </div>
           </div>
 
-          <div className="flex cursor-pointer gap-2 self-center rounded-round bg-whiteColor p-2">
+          <div
+            className="flex cursor-pointer gap-2 self-center rounded-round bg-whiteColor p-2"
+            onClick={handleGoogleLogin}
+          >
             <img src={google} alt="google icon" width={24} height={24} />
             <p>Login with google</p>
           </div>
