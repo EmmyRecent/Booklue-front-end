@@ -1,4 +1,4 @@
-import logo from "./logo.png";
+import logo from "./Logo.png";
 import google from "./google.png";
 
 export { logo, google };
