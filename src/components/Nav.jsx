@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { Logo } from "../assets/icons";
+import { logo } from "../assets/icons";
 import { navLinks } from "../constants";
 import { Form, Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
@@ -53,7 +53,7 @@ const Nav = () => {
           {/* logo */}
           <Link to={"/"}>
             <img
-              src={Logo}
+              src={logo}
               alt="Booklue Logo"
               className="w-[168px] md:w-[200px]"
             />

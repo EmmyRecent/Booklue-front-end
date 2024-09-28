@@ -1,4 +1,4 @@
-import Logo from "./logo.svg";
+import logo from "./logo.svg";
 import google from "./google.png";
 
-export { Logo, google };
+export { logo, google };
