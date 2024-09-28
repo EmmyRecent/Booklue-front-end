@@ -5,7 +5,7 @@ import { google } from "../../assets/icons";
 import axios from "axios";
 import { AuthContext } from "../../context/AuthContext";
 import ErrorMessage from "../../components/ErrorMessage";
-import SuccessMessage from "../../components/successMessage";
+// import SuccessMessage from "../../components/successMessage";
 import { apiUrl, generateRandomUserProfile } from "../../constants";
 
 const SignUp = () => {
@@ -16,7 +16,7 @@ const SignUp = () => {
     password: "",
   });
   const [isVisible, setIsVisible] = useState(false); // Track error and message visibility.
-  const [successMessage, setSuccessMessage] = useState("");
+  // const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const randomProfile = generateRandomUserProfile();
 
@@ -50,7 +50,7 @@ const SignUp = () => {
       if (response.status === 200) {
         setIsAuthenticated(true);
         setUser(response.data.user);
-        setSuccessMessage("Login successful!");
+        // setSuccessMessage("Login successful!");
 
         navigate("/profile");
       }
@@ -80,17 +80,17 @@ const SignUp = () => {
       return () => clearTimeout(timer); // Cleanup the timeout if the component unmounts.
     }
 
-    if (successMessage) {
-      setIsVisible(true); // Show the error.
+    // if (successMessage) {
+    //   setIsVisible(true); // Show the error.
 
-      const timer = setTimeout(() => {
-        setIsVisible(false); // start fade out.
-        setTimeout(() => successMessage(""), 500); // Clear error after fade out.
-      }, 4000); // wait 3 secs before starting fade-out
+    //   const timer = setTimeout(() => {
+    //     setIsVisible(false); // start fade out.
+    //     setTimeout(() => successMessage(""), 500); // Clear error after fade out.
+    //   }, 4000); // wait 3 secs before starting fade-out
 
-      return () => clearTimeout(timer); // Cleanup the timeout if the component unmounts.
-    }
-  }, [errorMessage, successMessage]);
+    //   return () => clearTimeout(timer); // Cleanup the timeout if the component unmounts.
+    // }
+  }, [errorMessage]);
 
   return (
     <section className="flex min-h-[70vh] items-center justify-center">
@@ -129,9 +129,9 @@ const SignUp = () => {
               <ErrorMessage message={errorMessage} isVisible={isVisible} />
             )}
 
-            {successMessage && (
+            {/* {successMessage && (
               <SuccessMessage message={successMessage} isVisible={isVisible} />
-            )}
+            )} */}
           </div>
 
           {/* OR line */}
