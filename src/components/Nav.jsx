@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
-// import { logo } from "../assets/icons";
-import logo from "/src/assets/icons/logo.svg";
+import { logo } from "../assets/icons";
 import { navLinks } from "../constants";
 import { Form, Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
